@@ -246,5 +246,6 @@ body {
         <img src="https://www.codingnepalweb.com/demos/create-responsive-website-html-css/hero-bg.png" alt="hero image" />
       </div>
     </section>
+    
   </body>
 </html>
