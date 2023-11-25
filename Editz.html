@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+<script>
+
+let searchInput = document.querySelector(".search-box input");
+let images = document.querySelectorAll(".image-box");
+let lightbox = document.querySelector(".lightbox");
+let closeButton = document.querySelector(".closeBtn");
+
+searchInput.addEventListener("keyup", (e) => {
+  //if user clicks enter button
+  if (e.key == "Enter") {
+    //getting user entered search value
+    let value = searchInput.value;
+    //converting entered value to lowercase
+    let searchValue = value.toLowerCase();
+
+    //getting data from images
+    images.forEach((image) => {
+      //matching search value with image data
+      if (value === image.dataset.name) {
+        return (image.style.display = "block");
+      }
+      image.style.display = "none";
+    });
+  }
+});
+
+searchInput.addEventListener("keyup", () => {
+  //returning if search value is not empty
+  if (searchInput.value != "") return;
+
+  //if its not empty
+  images.forEach((image) => {
+    image.style.display = "block";
+  });
+});
+
+images.forEach((image) => {
+  image.addEventListener("click", () => {
+    showLightBox(image.querySelector("img").src);
+  });
+});
+
+let showLightBox = (imgSrc) => {
+  lightbox.querySelector("img").src = imgSrc;
+  lightbox.classList.add("show");
+  document.body.style.overflow = "hidden";
+};
+
+closeButton.addEventListener("click", () => {
+  lightbox.classList.remove("show");
+  document.body.style.overflow = "auto";
+});
+
+</script>
+<style>
+    /* Google Fonts(Poppins) */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap");
+
+* {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  position: relative;
+  min-height: 100vh;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.container .search-box {
+  position: relative;
+  height: 42px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.container .search-box input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  outline: none;
+  border: none;
+  padding: 0 15px 0 45px;
+  background: #323334;
+  border-radius: 6px;
+  color: #fff;
+}
+
+.container .search-box i {
+  position: absolute;
+  color: #999;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 15px;
+  font-size: 20px;
+}
+
+.container .images {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.container .images .image-box {
+  position: relative;
+  height: 720px;
+  width: 1080px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 8px;
+  cursor: pointer;
+}
+
+.container .images .image-box img {
+  height: 100%;
+  width: 100%;
+  border-radius: 6px;
+  transition: 0.3s ease;
+}
+
+.container .images .image-box:hover img {
+  transform: scale(1.05);
+}
+
+.container .images .image-box h6 {
+  position: absolute;
+  color: #fff;
+  bottom: 10px;
+  left: 10px;
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: capitalize;
+}
+
+.container .lightbox {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.65);
+  visibility: hidden;
+}
+
+.container .lightbox.show {
+  visibility: visible;
+}
+
+.container .lightbox .wrapper {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  padding: 20px;
+  max-width: 850px;
+  background: #fff;
+  border-radius: 6px;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition: 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.container .lightbox.show .wrapper {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.container .lightbox .wrapper header,
+.container .lightbox .wrapper header .details {
+  display: flex;
+  align-items: center;
+}
+
+.container .lightbox .wrapper header {
+  justify-content: space-between;
+}
+
+.container .lightbox .wrapper header .details i {
+  font-size: 1.7rem;
+}
+
+.container .lightbox .wrapper header .details span {
+  font-size: 1.2rem;
+  margin-left: 10px;
+}
+
+.container .lightbox .wrapper .buttons i {
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  display: inline-block;
+  color: #fff;
+  margin-left: 10px;
+  background: #6c757d;
+  font-size: 1.25rem;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+
+.container .lightbox .wrapper .buttons i:hover {
+  background: #5f666d;
+}
+
+.container .lightbox .wrapper .preview-img {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.container .lightbox .wrapper .preview-img .img {
+  max-height: 65vh;
+}
+
+.container .lightbox .wrapper .preview-img .img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 900px) {
+  .container .lightbox .wrapper {
+    padding: 12px;
+    max-width: calc(100% - 50px);
+  }
+}
+
+@media (max-width: 688px) {
+  .container .lightbox .wrapper {
+    padding: 12px;
+    max-width: calc(100% - 26px);
+  }
+
+  .container .lightbox .wrapper .preview-img {
+    margin-top: 15px;
+  }
+}
+
+</style>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Gallery with Search</title>
+
+    <!--font awesome-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!--css file-->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="search-box">
+        <input type="text" placeholder="Search..." />
+        <i class="fas fa-search"></i>
+      </div>
+
+      <div class="images">
+        <div class="image-box" data-name="watch">
+          <img src="IMG/56.png" alt="" />
+          <h6>Avatar Design</h6>
+        </div>
+        <div class="image-box" data-name="headphones">
+          <img src="IMG/title 12 (2).jpg" alt="" />
+          <h6>What IF Design</h6>
+        </div>
+        <div class="image-box" data-name="camera">
+          <img src="IMG/65.png" alt="" />
+          <h6>Daredevil</h6>
+        </div>
+        <div class="image-box" data-name="car">
+          <img src="IMG/title 12.jpg" alt="" />
+          <h6>Wanda Vision</h6>
+        </div>
+        <div class="image-box" data-name="mobile">
+          <img src="Logo.png" alt="" />
+          <h6>My logo</h6>
+        </div>
+        <div class="image-box" data-name="watch">
+          <img src="IMG/Edited.png" alt="" />
+          <h6>Deadpool</h6>
+        </div>
+        <div class="image-box" data-name="car">
+          <img src="IMG/faz.png" alt="" />
+          <h6>Falcon & Winter Soilder</h6>
+        </div>
+        <div class="image-box" data-name="mobile">
+          <img src="IMG/encanto title.jpg" alt="" />
+          <h6>encanto</h6>
+        </div>
+        <div class="image-box" data-name="camera">
+          <img src="IMG/red ax.jpg" alt="" />
+          <h6>My Design</h6>
+        </div>
+        <div class="image-box" data-name="mobile">
+          <img src="IMG/title (3).jpg" alt="" />
+          <h6>Spidey No Way Home</h6>
+        </div>
+        <div class="image-box" data-name="mobile">
+            <img src="IMG/title 9.jpg" alt="" />
+            <h6>Morbius</h6>
+          </div>
+          <div class="image-box" data-name="mobile">
+            <img src="IMG/title 7.jpg" alt="" />
+            <h6>Groot</h6>
+          </div>
+          <div class="image-box" data-name="mobile">
+            <img src="IMG/title without bg.jpg" alt="" />
+            <h6>Stranger Things</h6>
+          </div>
+      </div>
+
+      <div class="lightbox">
+        <div class="wrapper">
+          <header>
+            <div class="details">
+              <i class="fas fa-camera"></i>
+              <span>Preview Image</span>
+            </div>
+            <div class="buttons">
+              <i class="closeBtn fas fa-times"></i>
+            </div>
+          </header>
+
+          <div class="preview-img">
+            <div class="img">
+              <img src="images/img1.jpg" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
